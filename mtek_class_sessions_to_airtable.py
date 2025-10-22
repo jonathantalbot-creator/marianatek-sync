@@ -121,12 +121,14 @@ def flatten(record):
     return row
 
 def fetch_page(since_iso, page, per_page=500):
-    # Build the URL manually because Mariana Tek rejects encoded $filter params unless formatted precisely
-    filter_str = f"$filter=start_time ge '{since_iso}'"
-    url = f"{BASE_URL}/{ENDPOINT}?{filter_str}&page={page}&per_page={per_page}"
+    # 1) First request: exactly like your Postman example (no quotes, no per_page)
+    if page == 1:
+        url = f"{BASE_URL}/{ENDPOINT}?$filter=start_time ge {since_iso}"
+    else:
+        # 2) Next pages: add page param only (keep filter identical)
+        url = f"{BASE_URL}/{ENDPOINT}?$filter=start_time ge {since_iso}&page={page}"
 
-    print("🔗 Fetching:", url)  # debug print so we can see full URL in GitHub logs
-
+    print("🔗 Fetching:", url)
     r = requests.get(url, headers=auth_headers(), timeout=60)
     r.raise_for_status()
     return r.json()
