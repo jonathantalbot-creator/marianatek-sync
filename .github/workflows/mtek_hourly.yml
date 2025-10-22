@@ -18,4 +18,4 @@ jobs:
           MT_TOKEN: ${{ secrets.MT_TOKEN }}
           AIRTABLE_SYNC_URL: ${{ secrets.AIRTABLE_SYNC_URL }}
           AIRTABLE_PAT: ${{ secrets.AIRTABLE_PAT }}
-          WINDOW_HOURS: "2"     # 1h cadence + 1h overlap
+          WINDOW_HOURS: "2160"   # 90 days, for example
