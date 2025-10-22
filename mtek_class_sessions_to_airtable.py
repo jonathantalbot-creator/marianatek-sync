@@ -182,8 +182,5 @@ def upload_to_airtable(csv_text):
 if __name__ == "__main__":
     rows = pull_window(hours=WINDOW_HOURS)
     print(f"Fetched {len(rows)} class_sessions in the last {WINDOW_HOURS}h")
-    if rows:
-        csv_text = to_csv_string(rows)
-        upload_to_airtable(csv_text)
-    else:
-        print("Nothing to upload")
+    csv_text = to_csv_string(rows)   # builds header even if rows == 0
+    upload_to_airtable(csv_text)     # always post so Airtable initializes
