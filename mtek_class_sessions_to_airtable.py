@@ -121,13 +121,10 @@ def flatten(record):
     return row
 
 def fetch_page(since_iso, page, per_page=500):
-    # Prefer filtering on start_datetime (ISO8601 Z). Adjust if you need a different field.
-    # Many JSON:API implementations accept comma-separated filters; you already showed $filter=...
-params = None  # we'll build manually
-url = f"{BASE_URL}/{ENDPOINT}?$filter=start_time ge {since_iso}&page={page}&per_page={per_page}"
-r = requests.get(url, headers=auth_headers(), timeout=60)
-    url = f"{BASE_URL}/{ENDPOINT}"
-    r = requests.get(url, headers=auth_headers(), params=params, timeout=60)
+    # Build the URL manually because Mariana Tek rejects encoded $filter params
+    url = f"{BASE_URL}/{ENDPOINT}?$filter=start_time ge {since_iso}&page={page}&per_page={per_page}"
+    
+    r = requests.get(url, headers=auth_headers(), timeout=60)
     r.raise_for_status()
     return r.json()
 
